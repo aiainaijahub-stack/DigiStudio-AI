@@ -124,7 +124,9 @@ function openWorkspace(productName) {
     document.getElementById("productMessage").textContent =
       "Product details captured. AI generation and permanent project saving will be added in a later stage.";
 
-    DigiStudioEditor.saveProduct(details);
+    const savedProduct = DigiStudioEditor.saveProduct(details);
+
+showPageEditor(savedProduct);
 
 document.getElementById("productMessage").textContent =
   "Product saved successfully! You can continue editing later on this browser.";
@@ -211,3 +213,116 @@ function escapeHTML(value) {
 }
 
 displaySavedProjects();
+// DigiStudio AI - Visual Page Editor
+
+function showPageEditor(product) {
+  if (!product.pages) {
+    product.pages = [];
+  }
+
+  workspace.innerHTML = `
+    <h2>📖 Edit Your Product</h2>
+    <p><strong>${escapeHTML(product.title)}</strong></p>
+
+    <div id="pageList"></div>
+
+    <button class="btn" id="addPageButton">
+      + Add New Page
+    </button>
+
+    <div id="pageEditor" style="margin-top:20px;"></div>
+
+    <button class="btn" id="savePagesButton"
+      style="margin-top:15px;">
+      Save All Pages
+    </button>
+  `;
+
+  const pageList = document.getElementById("pageList");
+  const pageEditor = document.getElementById("pageEditor");
+
+  function renderPages() {
+    pageList.innerHTML = "";
+
+    product.pages.forEach((page, index) => {
+      const button = document.createElement("button");
+      button.textContent = `Page ${index + 1}: ${page.title}`;
+      button.className = "btn";
+      button.style.margin = "5px";
+
+      button.addEventListener("click", () => {
+        editPage(page);
+      });
+
+      pageList.appendChild(button);
+    });
+  }
+
+  function editPage(page) {
+    pageEditor.innerHTML = `
+      <label>Page title</label>
+      <input id="pageTitle"
+        value="${escapeHTML(page.title)}"
+        style="width:100%;padding:12px;margin:8px 0;">
+
+      <label>Page content</label>
+      <textarea id="pageContent"
+        style="width:100%;min-height:180px;padding:12px;margin:8px 0;">${escapeHTML(page.content)}</textarea>
+
+      <button class="btn" id="updatePageButton">
+        Update Page
+      </button>
+
+      <button class="btn" id="deletePageButton"
+        style="background:#b42318;margin-top:8px;">
+        Delete Page
+      </button>
+    `;
+
+    document.getElementById("updatePageButton")
+      .addEventListener("click", () => {
+        DigiStudioPages.updatePage(
+          product,
+          page.id,
+          document.getElementById("pageTitle").value.trim(),
+          document.getElementById("pageContent").value
+        );
+
+        renderPages();
+        pageEditor.innerHTML = "<p>Page updated.</p>";
+      });
+
+    document.getElementById("deletePageButton")
+      .addEventListener("click", () => {
+        if (confirm("Delete this page?")) {
+          DigiStudioPages.deletePage(product, page.id);
+          renderPages();
+          pageEditor.innerHTML = "<p>Page deleted.</p>";
+        }
+      });
+  }
+
+  document.getElementById("addPageButton")
+    .addEventListener("click", () => {
+      const page = DigiStudioPages.addPage(
+        product,
+        `Page ${product.pages.length + 1}`,
+        ""
+      );
+
+      renderPages();
+      editPage(page);
+    });
+
+  document.getElementById("savePagesButton")
+    .addEventListener("click", () => {
+      const saved = DigiStudioPages.savePages(product);
+
+      document.getElementById("pageEditor").textContent =
+        saved ? "All pages saved successfully!" :
+        "Could not save pages. Please try again.";
+    });
+
+  renderPages();
+  workspace.scrollIntoView({ behavior: "smooth" });
+                          }
