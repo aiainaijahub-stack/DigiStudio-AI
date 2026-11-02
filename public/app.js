@@ -124,7 +124,10 @@ function openWorkspace(productName) {
     document.getElementById("productMessage").textContent =
       "Product details captured. AI generation and permanent project saving will be added in a later stage.";
 
-    console.log("Product details:", details);
+    DigiStudioEditor.saveProduct(details);
+
+document.getElementById("productMessage").textContent =
+  "Product saved successfully! You can continue editing later on this browser.";
   });
 
   workspace.scrollIntoView({ behavior: "smooth" });
