@@ -111,7 +111,19 @@
       .addEventListener("click", downloadCover);
 
     updatePreview();
+const backButton = document.createElement("button");
+backButton.textContent = "Back to Products";
+backButton.className = "btn";
+backButton.style.marginTop = "10px";
 
+backButton.addEventListener("click", () => {
+  designer.scrollIntoView({ behavior: "smooth" });
+  document.querySelector(".products").scrollIntoView({
+    behavior: "smooth"
+  });
+});
+
+designer.appendChild(backButton);
     designer.scrollIntoView({ behavior: "smooth" });
   }
 
