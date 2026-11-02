@@ -45,7 +45,7 @@
     button.textContent = "🎨 Open Cover Designer";
     button.style.marginTop = "15px";
 
-    workspace.appendChild(button);
+    workspace.parentNode.insertBefore(button, workspace.nextSibling);
 
     button.addEventListener("click", showDesigner);
   }
