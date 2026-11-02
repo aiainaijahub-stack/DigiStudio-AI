@@ -134,3 +134,80 @@ document.getElementById("productMessage").textContent =
 }
 
 console.log("DigiStudio AI product library loaded.");
+// Saved Projects Section
+
+const savedSection = document.createElement("section");
+
+savedSection.className = "workspace";
+savedSection.innerHTML = `
+  <h2>My Saved Projects</h2>
+  <p>View the digital products you have saved.</p>
+  <div id="savedProjectsList"></div>
+`;
+
+workspace.after(savedSection);
+
+function displaySavedProjects() {
+  const list = document.getElementById("savedProjectsList");
+  const saved = DigiStudioEditor.getProducts();
+
+  list.innerHTML = "";
+
+  if (saved.length === 0) {
+    list.textContent = "You have no saved projects yet.";
+    return;
+  }
+
+  saved.forEach(product => {
+    const item = document.createElement("div");
+
+    item.style.cssText =
+      "padding:12px;margin:10px 0;border:1px solid #ddd;border-radius:8px;";
+
+    const title = document.createElement("h3");
+    title.textContent = product.title;
+
+    const type = document.createElement("p");
+    type.textContent = product.type;
+
+    const viewButton = document.createElement("button");
+    viewButton.textContent = "View project";
+    viewButton.className = "btn";
+
+    viewButton.addEventListener("click", () => {
+      workspace.innerHTML = `
+        <h2>Saved Project</h2>
+        <p><strong>Title:</strong> ${escapeHTML(product.title)}</p>
+        <p><strong>Type:</strong> ${escapeHTML(product.type)}</p>
+        <p><strong>Problem:</strong> ${escapeHTML(product.problem)}</p>
+        <p><strong>Audience:</strong> ${escapeHTML(product.audience)}</p>
+        <p><strong>Design:</strong> ${escapeHTML(product.design)}</p>
+      `;
+
+      workspace.scrollIntoView({ behavior: "smooth" });
+    });
+
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Delete project";
+    deleteButton.style.cssText =
+      "margin-top:8px;padding:10px;background:#b42318;color:white;border:0;border-radius:8px;width:100%;";
+
+    deleteButton.addEventListener("click", () => {
+      if (confirm("Delete this saved project?")) {
+        DigiStudioEditor.deleteProduct(product.id);
+        displaySavedProjects();
+      }
+    });
+
+    item.append(title, type, viewButton, deleteButton);
+    list.appendChild(item);
+  });
+}
+
+function escapeHTML(value) {
+  const element = document.createElement("div");
+  element.textContent = value || "";
+  return element.innerHTML;
+}
+
+displaySavedProjects();
