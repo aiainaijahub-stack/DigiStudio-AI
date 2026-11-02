@@ -36,7 +36,7 @@
   ];
 
   function createCoverDesigner() {
-    const workspace = document.querySelector(".workspace");
+    const workspace = document.querySelector(".products");
 
     if (!workspace) return;
 
