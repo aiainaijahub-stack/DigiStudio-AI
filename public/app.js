@@ -177,16 +177,7 @@ function displaySavedProjects() {
     viewButton.className = "btn";
 
     viewButton.addEventListener("click", () => {
-      workspace.innerHTML = `
-        <h2>Saved Project</h2>
-        <p><strong>Title:</strong> ${escapeHTML(product.title)}</p>
-        <p><strong>Type:</strong> ${escapeHTML(product.type)}</p>
-        <p><strong>Problem:</strong> ${escapeHTML(product.problem)}</p>
-        <p><strong>Audience:</strong> ${escapeHTML(product.audience)}</p>
-        <p><strong>Design:</strong> ${escapeHTML(product.design)}</p>
-      `;
-
-      workspace.scrollIntoView({ behavior: "smooth" });
+      showPageEditor(product);
     });
 
     const deleteButton = document.createElement("button");
