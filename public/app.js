@@ -1,4 +1,6 @@
 
+// DigiStudio AI - Main Application
+
 const products = [
   ["📚", "Ebooks", "Digital books and guides"],
   ["📝", "Workbooks", "Exercises and practical guides"],
@@ -20,53 +22,92 @@ const products = [
   ["✨", "Custom Product", "Describe any product you want"]
 ];
 
+const workspace = document.getElementById("workspaceSection");
 const productsContainer = document.querySelector(".products");
-const workspace = document.querySelector(".workspace");
+const savedList = document.getElementById("savedProjectsList");
 
-// Add product search
-const search = document.createElement("input");
-search.type = "search";
-search.placeholder = "Search digital product types...";
-search.setAttribute("aria-label", "Search product types");
-search.style.cssText =
-  "width:100%;padding:14px;margin:0 0 15px;border:1px solid #dce2ea;border-radius:9px;font-size:15px;";
+// Navigation
+function showSection(page) {
+  const sections = {
+    dashboard: ["dashboardSection", "productsSection"],
+    products: ["productsSection"],
+    saved: ["savedSection"],
+    design: ["designSection"]
+  };
 
-productsContainer.before(search);
+  document.querySelectorAll(
+    "#dashboardSection, #productsSection, #savedSection, #designSection, #workspaceSection"
+  ).forEach(section => {
+    section.style.display = "none";
+  });
 
-// Build the product library
-productsContainer.innerHTML = "";
+  (sections[page] || sections.dashboard).forEach(id => {
+    const section = document.getElementById(id);
+    if (section) section.style.display = "block";
+  });
 
-products.forEach(([emoji, name, description]) => {
-  const card = document.createElement("div");
-  card.className = "product";
-  card.style.cursor = "pointer";
-  card.dataset.name = name.toLowerCase();
+  document.querySelectorAll("#mainNavigation button").forEach(button => {
+    button.classList.toggle(
+      "active",
+      button.dataset.page === page
+    );
+  });
 
-  card.innerHTML = `
-    <div class="emoji">${emoji}</div>
-    <h3>${name}</h3>
-    <p>${description}</p>
-  `;
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
 
-  card.addEventListener("click", () => openWorkspace(name));
-  productsContainer.appendChild(card);
-});
-
-// Search products
-search.addEventListener("input", () => {
-  const query = search.value.toLowerCase();
-
-  document.querySelectorAll(".product").forEach(card => {
-    card.style.display = card.dataset.name.includes(query)
-      ? "block"
-      : "none";
+document.querySelectorAll("#mainNavigation button").forEach(button => {
+  button.addEventListener("click", () => {
+    showSection(button.dataset.page);
   });
 });
 
+// Product library
+function displayProducts() {
+  productsContainer.innerHTML = "";
+
+  products.forEach(([emoji, name, description]) => {
+    const card = document.createElement("div");
+    card.className = "product";
+    card.dataset.name = name.toLowerCase();
+
+    card.innerHTML = `
+      <div class="emoji">${emoji}</div>
+      <h3>${name}</h3>
+      <p>${description}</p>
+    `;
+
+    card.addEventListener("click", () => {
+      openWorkspace(name);
+    });
+
+    productsContainer.appendChild(card);
+  });
+}
+
+// Product search
+document.getElementById("productSearch")
+  .addEventListener("input", event => {
+    const query = event.target.value.toLowerCase();
+
+    document.querySelectorAll(".product").forEach(card => {
+      card.style.display = card.dataset.name.includes(query)
+        ? "block"
+        : "none";
+    });
+  });
+
 // Open product workspace
 function openWorkspace(productName) {
+  workspace.style.display = "block";
+
   workspace.innerHTML = `
-    <h2>Create ${productName}</h2>
+    <button class="btn btn-secondary" id="backToProducts">
+      ← Back to Products
+    </button>
+
+    <h2 style="margin-top:20px;">Create ${productName}</h2>
+
     <p>Tell us about the digital product you want to create.</p>
 
     <form id="productForm">
@@ -95,68 +136,57 @@ function openWorkspace(productName) {
         <option>Simple and educational</option>
       </select>
 
-      <button class="btn" type="submit">Save Product Details</button>
+      <button class="btn" type="submit">
+        Save Product Details
+      </button>
     </form>
 
     <div id="productMessage" style="margin-top:15px;"></div>
-
-    <button class="btn" id="backButton"
-      style="margin-top:15px;background:#64748b;">
-      Back to products
-    </button>
   `;
 
-  document.getElementById("backButton").addEventListener("click", () => {
-    location.reload();
-  });
+  document.getElementById("backToProducts")
+    .addEventListener("click", () => {
+      workspace.style.display = "none";
+      showSection("products");
+    });
 
-  document.getElementById("productForm").addEventListener("submit", event => {
-    event.preventDefault();
+  document.getElementById("productForm")
+    .addEventListener("submit", event => {
+      event.preventDefault();
 
-    const details = {
-      type: productName,
-      title: document.getElementById("productTitle").value.trim(),
-      problem: document.getElementById("productProblem").value.trim(),
-      audience: document.getElementById("productAudience").value.trim(),
-      design: document.getElementById("productStyle").value
-    };
+      const details = {
+        type: productName,
+        title: document.getElementById("productTitle").value.trim(),
+        problem: document.getElementById("productProblem").value.trim(),
+        audience: document.getElementById("productAudience").value.trim(),
+        design: document.getElementById("productStyle").value,
+        pages: []
+      };
 
-    document.getElementById("productMessage").textContent =
-      "Product details captured. AI generation and permanent project saving will be added in a later stage.";
+      const savedProduct = DigiStudioEditor.saveProduct(details);
 
-    const savedProduct = DigiStudioEditor.saveProduct(details);
-
-showPageEditor(savedProduct);
-
-document.getElementById("productMessage").textContent =
-  "Product saved successfully! You can continue editing later on this browser.";
-  });
+      displaySavedProjects();
+      showPageEditor(savedProduct);
+    });
 
   workspace.scrollIntoView({ behavior: "smooth" });
 }
 
-console.log("DigiStudio AI product library loaded.");
-// Saved Projects Section
+// Escape text before inserting it into HTML
+function escapeHTML(value) {
+  const element = document.createElement("div");
+  element.textContent = value || "";
+  return element.innerHTML;
+}
 
-const savedSection = document.createElement("section");
-
-savedSection.className = "workspace";
-savedSection.innerHTML = `
-  <h2>My Saved Projects</h2>
-  <p>View the digital products you have saved.</p>
-  <div id="savedProjectsList"></div>
-`;
-
-workspace.after(savedSection);
-
+// Saved projects
 function displaySavedProjects() {
-  const list = document.getElementById("savedProjectsList");
   const saved = DigiStudioEditor.getProducts();
 
-  list.innerHTML = "";
+  savedList.innerHTML = "";
 
   if (saved.length === 0) {
-    list.textContent = "You have no saved projects yet.";
+    savedList.textContent = "You have no saved projects yet.";
     return;
   }
 
@@ -164,7 +194,7 @@ function displaySavedProjects() {
     const item = document.createElement("div");
 
     item.style.cssText =
-      "padding:12px;margin:10px 0;border:1px solid #ddd;border-radius:8px;";
+      "padding:15px;margin:12px 0;border:1px solid #e5eaf1;border-radius:9px;";
 
     const title = document.createElement("h3");
     title.textContent = product.title;
@@ -173,7 +203,7 @@ function displaySavedProjects() {
     type.textContent = product.type;
 
     const viewButton = document.createElement("button");
-    viewButton.textContent = "View project";
+    viewButton.textContent = "Open Project";
     viewButton.className = "btn";
 
     viewButton.addEventListener("click", () => {
@@ -181,9 +211,10 @@ function displaySavedProjects() {
     });
 
     const deleteButton = document.createElement("button");
-    deleteButton.textContent = "Delete project";
+    deleteButton.textContent = "Delete Project";
+    deleteButton.className = "btn";
     deleteButton.style.cssText =
-      "margin-top:8px;padding:10px;background:#b42318;color:white;border:0;border-radius:8px;width:100%;";
+      "margin:8px 0 0 8px;background:#b42318;";
 
     deleteButton.addEventListener("click", () => {
       if (confirm("Delete this saved project?")) {
@@ -193,29 +224,34 @@ function displaySavedProjects() {
     });
 
     item.append(title, type, viewButton, deleteButton);
-    list.appendChild(item);
+    savedList.appendChild(item);
   });
 }
 
-function escapeHTML(value) {
-  const element = document.createElement("div");
-  element.textContent = value || "";
-  return element.innerHTML;
-}
-
-displaySavedProjects();
-// DigiStudio AI - Visual Page Editor
-
+// Product page editor
 function showPageEditor(product) {
   if (!product.pages) {
     product.pages = [];
   }
 
+  workspace.style.display = "block";
+
+  document.querySelectorAll(
+    "#dashboardSection, #productsSection, #savedSection, #designSection"
+  ).forEach(section => {
+    section.style.display = "none";
+  });
+
   workspace.innerHTML = `
-    <h2>📖 Edit Your Product</h2>
+    <button class="btn btn-secondary" id="backToProjects">
+      ← Back to Projects
+    </button>
+
+    <h2 style="margin-top:20px;">📖 Edit Your Product</h2>
+
     <p><strong>${escapeHTML(product.title)}</strong></p>
 
-    <div id="pageList"></div>
+    <div id="pageList" style="margin:15px 0;"></div>
 
     <button class="btn" id="addPageButton">
       + Add New Page
@@ -227,7 +263,15 @@ function showPageEditor(product) {
       style="margin-top:15px;">
       Save All Pages
     </button>
+
+    <p id="saveMessage" style="margin-top:12px;"></p>
   `;
+
+  document.getElementById("backToProjects")
+    .addEventListener("click", () => {
+      workspace.style.display = "none";
+      showSection("saved");
+    });
 
   const pageList = document.getElementById("pageList");
   const pageEditor = document.getElementById("pageEditor");
@@ -235,11 +279,16 @@ function showPageEditor(product) {
   function renderPages() {
     pageList.innerHTML = "";
 
+    if (product.pages.length === 0) {
+      pageList.textContent = "No pages added yet. Add your first page.";
+      return;
+    }
+
     product.pages.forEach((page, index) => {
       const button = document.createElement("button");
       button.textContent = `Page ${index + 1}: ${page.title}`;
-      button.className = "btn";
-      button.style.margin = "5px";
+      button.className = "btn btn-secondary";
+      button.style.margin = "5px 5px 5px 0";
 
       button.addEventListener("click", () => {
         editPage(page);
@@ -280,7 +329,7 @@ function showPageEditor(product) {
         );
 
         renderPages();
-        pageEditor.innerHTML = "<p>Page updated.</p>";
+        pageEditor.textContent = "Page updated. Remember to save your changes.";
       });
 
     document.getElementById("deletePageButton")
@@ -288,7 +337,7 @@ function showPageEditor(product) {
         if (confirm("Delete this page?")) {
           DigiStudioPages.deletePage(product, page.id);
           renderPages();
-          pageEditor.innerHTML = "<p>Page deleted.</p>";
+          pageEditor.textContent = "Page deleted. Remember to save your changes.";
         }
       });
   }
@@ -309,11 +358,23 @@ function showPageEditor(product) {
     .addEventListener("click", () => {
       const saved = DigiStudioPages.savePages(product);
 
-      document.getElementById("pageEditor").textContent =
-        saved ? "All pages saved successfully!" :
-        "Could not save pages. Please try again.";
+      document.getElementById("saveMessage").textContent =
+        saved
+          ? "All pages saved successfully!"
+          : "Could not save pages. Please try again.";
+
+      if (saved) {
+        displaySavedProjects();
+      }
     });
 
   renderPages();
   workspace.scrollIntoView({ behavior: "smooth" });
-                          }
+}
+
+// Start application
+displayProducts();
+displaySavedProjects();
+showSection("dashboard");
+
+console.log("DigiStudio AI application loaded.");
