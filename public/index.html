@@ -1,150 +1,221 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#101827">
-  <title>DigiStudio AI</title>
+  <meta name="theme-color" content="#14213d">
+  <title>DigiStudio AI - Digital Product Factory</title>
+
   <style>
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
     }
 
     body {
+      margin: 0;
       font-family: Arial, sans-serif;
       background: #f4f6fa;
       color: #172033;
     }
 
     header {
-      background: #101827;
+      background: #14213d;
       color: white;
-      padding: 22px 18px;
+      padding: 20px;
     }
 
-    .brand {
-      font-size: 23px;
-      font-weight: bold;
+    .header-inner {
+      max-width: 1100px;
+      margin: auto;
     }
 
-    .brand span {
-      color: #65d6a5;
+    header h1 {
+      margin: 0;
+      font-size: 25px;
     }
 
     header p {
-      color: #c4cbd7;
-      margin-top: 8px;
+      margin: 7px 0 0;
+      color: #cbd5e1;
       font-size: 13px;
     }
 
+    nav {
+      display: flex;
+      gap: 9px;
+      overflow-x: auto;
+      padding: 12px 15px;
+      background: white;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    nav button {
+      flex-shrink: 0;
+      border: 0;
+      background: #eef2f7;
+      padding: 11px 15px;
+      border-radius: 8px;
+      color: #26344d;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    nav button.active {
+      background: #14213d;
+      color: white;
+    }
+
     main {
-      max-width: 850px;
+      max-width: 1100px;
       margin: auto;
-      padding: 20px 15px 40px;
+      padding: 20px 15px 50px;
     }
 
     .welcome {
-      margin-bottom: 23px;
+      background: linear-gradient(120deg, #14213d, #243f68);
+      color: white;
+      padding: 25px;
+      border-radius: 14px;
+      margin-bottom: 25px;
     }
 
-    .welcome h1 {
-      font-size: 24px;
-      margin-bottom: 8px;
+    .welcome h2 {
+      margin-top: 0;
+      font-size: 23px;
     }
 
     .welcome p {
-      color: #687386;
-      line-height: 1.5;
+      color: #dbeafe;
+      line-height: 1.6;
+      font-size: 14px;
     }
 
-    .section-title {
-      font-size: 17px;
-      margin-bottom: 13px;
+    .section-heading {
+      margin: 28px 0 15px;
+    }
+
+    .section-heading h2 {
+      margin-bottom: 5px;
+      font-size: 20px;
+    }
+
+    .section-heading p {
+      color: #64748b;
+      font-size: 13px;
     }
 
     .products {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+      gap: 13px;
     }
 
     .product {
       background: white;
-      border: 1px solid #e4e8ef;
-      border-radius: 13px;
-      padding: 17px 13px;
-      min-height: 125px;
+      border: 1px solid #e5eaf1;
+      padding: 17px;
+      border-radius: 11px;
+      cursor: pointer;
+      transition: 0.2s;
     }
 
-    .product .emoji {
+    .product:hover {
+      border-color: #365b91;
+      transform: translateY(-2px);
+    }
+
+    .emoji {
       font-size: 27px;
-      margin-bottom: 12px;
     }
 
     .product h3 {
+      margin: 10px 0 6px;
       font-size: 15px;
-      margin-bottom: 6px;
     }
 
     .product p {
+      margin: 0;
+      color: #64748b;
       font-size: 12px;
-      color: #778195;
-      line-height: 1.4;
+      line-height: 1.5;
     }
 
     .workspace {
       background: white;
+      border: 1px solid #e5eaf1;
+      border-radius: 12px;
       padding: 20px;
-      margin-top: 23px;
-      border-radius: 13px;
-      border: 1px solid #e4e8ef;
+      margin-top: 22px;
     }
 
     .workspace h2 {
-      font-size: 18px;
-      margin-bottom: 8px;
+      margin-top: 0;
     }
 
-    .workspace p {
-      color: #778195;
-      font-size: 13px;
-      line-height: 1.5;
-      margin-bottom: 15px;
-    }
-
-    .btn {
-      background: #087f5b;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 13px 17px;
+    .empty-state {
+      color: #64748b;
       font-size: 14px;
-      font-weight: bold;
-      width: 100%;
-      cursor: pointer;
+      line-height: 1.6;
     }
 
     .status {
-      background: #e7f8ef;
-      color: #087f5b;
+      display: inline-block;
+      background: #e8f5ed;
+      color: #217346;
+      padding: 7px 11px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-top: 8px;
+    }
+
+    .btn {
+      border: 0;
+      background: #14213d;
+      color: white;
+      padding: 12px 16px;
       border-radius: 8px;
-      padding: 13px;
-      margin-top: 20px;
-      font-size: 13px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .btn-secondary {
+      background: #64748b;
+    }
+
+    input, textarea, select {
+      font: inherit;
+      max-width: 100%;
     }
 
     footer {
       text-align: center;
-      color: #8992a2;
+      padding: 25px 15px;
+      color: #64748b;
       font-size: 12px;
-      padding: 25px 10px;
     }
 
-    @media (min-width: 600px) {
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 22px;
+      }
+
+      main {
+        padding: 15px 12px 40px;
+      }
+
+      .welcome {
+        padding: 20px;
+      }
+
       .products {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .product {
+        padding: 13px;
       }
     }
   </style>
@@ -153,79 +224,84 @@
 <body>
 
   <header>
-    <div class="brand">DigiStudio <span>AI</span></div>
-    <p>Your digital product creation studio</p>
+    <div class="header-inner">
+      <h1>✨ DigiStudio AI</h1>
+      <p>Your Digital Product Factory</p>
+    </div>
   </header>
 
+  <nav id="mainNavigation">
+    <button class="active" data-page="dashboard">Dashboard</button>
+    <button data-page="products">Products</button>
+    <button data-page="saved">My Projects</button>
+    <button data-page="design">Design Studio</button>
+  </nav>
+
   <main>
-
     <section class="welcome">
-      <h1>Turn your ideas into products.</h1>
-      <p>Create, design and package digital products ready for your customers.</p>
+      <h2>Create Digital Products in One Place</h2>
+      <p>
+        Turn ideas into ebooks, workbooks, templates and other
+        digital products. Write, edit, design and export your work.
+      </p>
+      <span class="status">Your workspace is ready</span>
     </section>
 
-    <h2 class="section-title">What do you want to create?</h2>
-
-    <section class="products">
-
-      <div class="product">
-        <div class="emoji">📚</div>
-        <h3>Ebooks</h3>
-        <p>Create professional digital books.</p>
+    <section id="dashboardSection">
+      <div class="section-heading">
+        <h2>What would you like to create?</h2>
+        <p>Choose a product type to begin.</p>
       </div>
-
-      <div class="product">
-        <div class="emoji">📝</div>
-        <h3>Workbooks</h3>
-        <p>Build exercises and practical guides.</p>
-      </div>
-
-      <div class="product">
-        <div class="emoji">📋</div>
-        <h3>Templates</h3>
-        <p>Design useful editable templates.</p>
-      </div>
-
-      <div class="product">
-        <div class="emoji">🎓</div>
-        <h3>Mini Courses</h3>
-        <p>Organise lessons and learning materials.</p>
-      </div>
-
-      <div class="product">
-        <div class="emoji">🎁</div>
-        <h3>Product Bundles</h3>
-        <p>Combine products into valuable packages.</p>
-      </div>
-
-      <div class="product">
-        <div class="emoji">🎨</div>
-        <h3>Product Design</h3>
-        <p>Create covers and beautiful layouts.</p>
-      </div>
-
     </section>
 
-    <section class="workspace">
-      <h2>Your workspace</h2>
-      <p>Your product creation journey starts here. Your project-saving feature will be added next.</p>
-      <button class="btn" onclick="alert('Your product workspace is coming soon!')">
-        Start Creating
-      </button>
+    <section id="productsSection">
+      <div class="section-heading">
+        <h2>Product Library</h2>
+        <p>Explore all available digital product formats.</p>
+      </div>
+
+      <input
+        id="productSearch"
+        type="search"
+        placeholder="Search product types..."
+        style="width:100%;padding:13px;margin-bottom:15px;border:1px solid #dce2ea;border-radius:8px;"
+      >
+
+      <div class="products"></div>
     </section>
 
-    <div class="status">
-      ✓ Design foundation ready. AI generation is currently disabled to protect your free quota.
-    </div>
+    <section id="workspaceSection" class="workspace">
+      <h2>Product Workspace</h2>
+      <p class="empty-state">
+        Select a product type to start creating.
+        Your editing tools will appear here.
+      </p>
+    </section>
 
+    <section id="savedSection" class="workspace">
+      <h2>My Saved Projects</h2>
+      <p class="empty-state">
+        Your saved digital products will appear here.
+      </p>
+      <div id="savedProjectsList"></div>
+    </section>
+
+    <section id="designSection" class="workspace">
+      <h2>Design Studio</h2>
+      <p class="empty-state">
+        Create professional covers and format your product pages.
+      </p>
+    </section>
   </main>
 
   <footer>
-    DigiStudio AI · Create something valuable.
+    DigiStudio AI · Create. Design. Export.
   </footer>
 
-<script src="editor.js"></script>
-<script src="cover-designer.js"></script>
-<script src="app.js"></script>
+  <script src="editor.js"></script>
+  <script src="cover-designer.js"></script>
+  <script src="app.js"></script>
+
 </body>
-</html>
+  </html>
+  
