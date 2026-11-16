@@ -435,19 +435,72 @@ function editPage(page) {
       previewTitle.style.borderBottom = "none";
     }
 
-    if (layout === "exercise" || layout === "worksheet") {
-      const note = document.createElement("p");
-      note.textContent = "✍️ Your answers:";
-      note.style.marginTop = "25px";
-      extra.appendChild(note);
+    if (layout === "exercise") {
+  const heading = document.createElement("h3");
+  heading.textContent = "✍️ Complete the Exercise";
+  heading.style.marginTop = "25px";
+  extra.appendChild(heading);
 
-      for (let i = 0; i < 4; i++) {
-        const line = document.createElement("div");
-        line.style.borderBottom = "1px solid #aaa";
-        line.style.height = "28px";
-        extra.appendChild(line);
-      }
+  for (let i = 1; i <= 4; i++) {
+    const question = document.createElement("div");
+    question.textContent = `${i}. Write your answer:`;
+    question.style.marginTop = "18px";
+    extra.appendChild(question);
+
+    const line = document.createElement("div");
+    line.style.borderBottom = "1px solid #aaa";
+    line.style.height = "30px";
+    extra.appendChild(line);
+  }
+}
+
+if (layout === "worksheet") {
+  const heading = document.createElement("h3");
+  heading.textContent = "📋 Worksheet";
+  heading.style.marginTop = "25px";
+  extra.appendChild(heading);
+
+  const instruction = document.createElement("p");
+  instruction.textContent = "Complete each task below:";
+  extra.appendChild(instruction);
+
+  for (let i = 1; i <= 5; i++) {
+    const task = document.createElement("div");
+    task.textContent = `☐  Task ${i}: __________________________`;
+    task.style.padding = "14px 8px";
+    task.style.margin = "8px 0";
+    task.style.background = "#f0f5fa";
+    task.style.borderRadius = "6px";
+    extra.appendChild(task);
+  }
+}
+
+if (layout === "reflection") {
+  const heading = document.createElement("h3");
+  heading.textContent = "💭 Reflection Questions";
+  heading.style.marginTop = "25px";
+  extra.appendChild(heading);
+
+  const questions = [
+    "1. What did I learn?",
+    "2. What was challenging?",
+    "3. How will I use what I learned?"
+  ];
+
+  questions.forEach(questionText => {
+    const question = document.createElement("p");
+    question.textContent = questionText;
+    question.style.marginTop = "20px";
+    extra.appendChild(question);
+
+    for (let i = 0; i < 2; i++) {
+      const line = document.createElement("div");
+      line.style.borderBottom = "1px solid #aaa";
+      line.style.height = "28px";
+      extra.appendChild(line);
     }
+  });
+}
 
     if (layout === "daily" || layout === "weekly") {
       const note = document.createElement("p");
