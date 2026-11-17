@@ -435,24 +435,57 @@ function editPage(page) {
       previewTitle.style.borderBottom = "none";
     }
 
-    if (layout === "exercise") {
+if (layout === "exercise") {
+  preview.style.background = "#f8fbff";
+  preview.style.borderTop = "6px solid #287a52";
+  preview.style.padding = "30px";
+
+  previewTitle.style.color = "#17613f";
+  previewTitle.style.fontFamily = "Arial, sans-serif";
+  previewTitle.style.fontSize = "25px";
+  previewTitle.style.textAlign = "left";
+  previewTitle.style.borderBottom = "2px solid #d7e9df";
+
   const heading = document.createElement("h3");
-  heading.textContent = "✍️ Complete the Exercise";
+  heading.textContent = "✍️ Exercise Time";
+  heading.style.color = "#17613f";
   heading.style.marginTop = "25px";
   extra.appendChild(heading);
 
-  for (let i = 1; i <= 4; i++) {
-    const question = document.createElement("div");
-    question.textContent = `${i}. Write your answer:`;
-    question.style.marginTop = "18px";
-    extra.appendChild(question);
+  const instruction = document.createElement("p");
+  instruction.textContent = "Read each question carefully and write your answer in the space provided.";
+  instruction.style.color = "#52645a";
+  instruction.style.lineHeight = "1.6";
+  extra.appendChild(instruction);
 
-    const line = document.createElement("div");
-    line.style.borderBottom = "1px solid #aaa";
-    line.style.height = "30px";
-    extra.appendChild(line);
+  for (let i = 1; i <= 4; i++) {
+    const card = document.createElement("div");
+    card.style.background = "#ffffff";
+    card.style.border = "1px solid #dce9e1";
+    card.style.borderRadius = "8px";
+    card.style.padding = "12px";
+    card.style.marginTop = "15px";
+
+    const question = document.createElement("strong");
+    question.textContent = `Question ${i}`;
+    question.style.color = "#17613f";
+    card.appendChild(question);
+
+    const prompt = document.createElement("p");
+    prompt.textContent = "Write your answer:";
+    prompt.style.margin = "10px 0 0";
+    card.appendChild(prompt);
+
+    for (let j = 0; j < 2; j++) {
+      const line = document.createElement("div");
+      line.style.borderBottom = "1px solid #b8c9bf";
+      line.style.height = "28px";
+      card.appendChild(line);
+    }
+
+    extra.appendChild(card);
   }
-}
+      }
 
 if (layout === "worksheet") {
   const heading = document.createElement("h3");
