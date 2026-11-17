@@ -240,6 +240,102 @@ register("reflection", function (elements) {
     helpers.addWritingLines(card, 3);
   });
 });
+ // EBOOK PAGE DESIGNS
+
+// Standard reading page
+register("standard", function (elements) {
+  const { preview, title, content } = elements;
+
+  preview.style.background = "#ffffff";
+  preview.style.borderTop = "4px solid #287a52";
+
+  title.style.color = "#263238";
+  title.style.fontFamily = "Georgia, serif";
+  title.style.fontSize = "25px";
+
+  content.style.fontFamily = "Georgia, serif";
+  content.style.lineHeight = "1.9";
+  content.style.color = "#374151";
+});
+
+// Chapter opener
+register("chapter", function (elements) {
+  const { preview, title, content, extra, helpers } = elements;
+
+  preview.style.background = "#f8fbff";
+  preview.style.borderTop = "8px solid #287a52";
+
+  title.style.color = "#17613f";
+  title.style.textAlign = "center";
+  title.style.fontFamily = "Georgia, serif";
+  title.style.fontSize = "28px";
+  title.style.marginTop = "35px";
+
+  content.style.fontFamily = "Georgia, serif";
+  content.style.lineHeight = "1.9";
+
+  const label = helpers.createElement(
+    "p",
+    "CHAPTER",
+    {
+      color: "#287a52",
+      textAlign: "center",
+      letterSpacing: "4px",
+      fontWeight: "bold",
+      marginTop: "35px"
+    }
+  );
+
+  extra.appendChild(label);
+});
+
+// Quote page
+register("quote", function (elements) {
+  const { preview, title, content } = elements;
+
+  preview.style.background = "#f7f2e9";
+  preview.style.borderTop = "5px solid #b89b69";
+
+  title.style.color = "#735c37";
+  title.style.textAlign = "center";
+  title.style.fontFamily = "Georgia, serif";
+  title.style.fontSize = "26px";
+
+  content.style.fontFamily = "Georgia, serif";
+  content.style.fontStyle = "italic";
+  content.style.textAlign = "center";
+  content.style.fontSize = "19px";
+  content.style.lineHeight = "2";
+  content.style.padding = "45px 10px";
+});
+
+// Section divider
+register("section", function (elements) {
+  const { preview, title, content, extra } = elements;
+
+  preview.style.background = "#14213d";
+  preview.style.borderTop = "8px solid #287a52";
+
+  title.style.color = "#ffffff";
+  title.style.textAlign = "center";
+  title.style.fontFamily = "Georgia, serif";
+  title.style.fontSize = "30px";
+  title.style.marginTop = "75px";
+  title.style.borderBottom = "none";
+
+  content.style.color = "#ffffff";
+  content.style.textAlign = "center";
+  content.style.fontFamily = "Georgia, serif";
+  content.style.lineHeight = "1.9";
+
+  const decoration = document.createElement("div");
+  decoration.textContent = "◆  ◆  ◆";
+  decoration.style.color = "#d4af70";
+  decoration.style.textAlign = "center";
+  decoration.style.marginTop = "35px";
+
+  extra.appendChild(decoration);
+});
   // Make the engine available to the main application
   window.DigiStudioInterior = {
     register,
