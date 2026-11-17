@@ -537,10 +537,26 @@ if (layout === "worksheet") {
   }
 
 if (layout === "reflection") {
+  preview.style.background = "#fbf8ff";
+  preview.style.borderTop = "6px solid #8064a2";
+  preview.style.padding = "30px";
+
+  previewTitle.style.color = "#624583";
+  previewTitle.style.fontFamily = "Arial, sans-serif";
+  previewTitle.style.fontSize = "25px";
+  previewTitle.style.borderBottom = "2px solid #e4d9f0";
+
   const heading = document.createElement("h3");
-  heading.textContent = "💭 Reflection Questions";
+  heading.textContent = "💭 My Reflection Journal";
+  heading.style.color = "#624583";
   heading.style.marginTop = "25px";
   extra.appendChild(heading);
+
+  const instruction = document.createElement("p");
+  instruction.textContent = "Take a moment to think about what you have learned. Write your thoughts below.";
+  instruction.style.color = "#685b75";
+  instruction.style.lineHeight = "1.6";
+  extra.appendChild(instruction);
 
   const questions = [
     "1. What did I learn?",
@@ -549,17 +565,27 @@ if (layout === "reflection") {
   ];
 
   questions.forEach(questionText => {
-    const question = document.createElement("p");
-    question.textContent = questionText;
-    question.style.marginTop = "20px";
-    extra.appendChild(question);
+    const card = document.createElement("div");
+    card.style.background = "#ffffff";
+    card.style.border = "1px solid #e4d9f0";
+    card.style.borderLeft = "5px solid #8064a2";
+    card.style.borderRadius = "8px";
+    card.style.padding = "15px";
+    card.style.marginTop = "16px";
 
-    for (let i = 0; i < 2; i++) {
+    const question = document.createElement("strong");
+    question.textContent = questionText;
+    question.style.color = "#624583";
+    card.appendChild(question);
+
+    for (let i = 0; i < 3; i++) {
       const line = document.createElement("div");
-      line.style.borderBottom = "1px solid #aaa";
+      line.style.borderBottom = "1px solid #cfc4dc";
       line.style.height = "28px";
-      extra.appendChild(line);
+      card.appendChild(line);
     }
+
+    extra.appendChild(card);
   });
 }
 
