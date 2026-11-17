@@ -408,8 +408,14 @@ function editPage(page) {
 
     const layout = layoutInput.value;
 if (
-  product.type === "Workbooks" &&
-  ["exercise", "worksheet", "reflection"].includes(layout)
+  (
+    product.type === "Workbooks" &&
+    ["exercise", "worksheet", "reflection"].includes(layout)
+  ) ||
+  (
+    product.type === "Ebooks" &&
+    ["standard", "chapter", "quote", "section"].includes(layout)
+  )
 ) {
   DigiStudioInterior.render(layout, {
     preview: preview,
