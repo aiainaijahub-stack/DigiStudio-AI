@@ -488,25 +488,53 @@ if (layout === "exercise") {
       }
 
 if (layout === "worksheet") {
+  preview.style.background = "#f4f8fc";
+  preview.style.borderTop = "6px solid #287a52";
+  preview.style.padding = "30px";
+
+  previewTitle.style.color = "#17613f";
+  previewTitle.style.fontFamily = "Arial, sans-serif";
+  previewTitle.style.fontSize = "25px";
+  previewTitle.style.borderBottom = "2px solid #d7e9df";
+
   const heading = document.createElement("h3");
-  heading.textContent = "📋 Worksheet";
+  heading.textContent = "📋 Practice Worksheet";
+  heading.style.color = "#17613f";
   heading.style.marginTop = "25px";
   extra.appendChild(heading);
 
   const instruction = document.createElement("p");
-  instruction.textContent = "Complete each task below:";
+  instruction.textContent = "Complete each task and tick the box when finished.";
+  instruction.style.color = "#52645a";
+  instruction.style.lineHeight = "1.6";
   extra.appendChild(instruction);
 
   for (let i = 1; i <= 5; i++) {
-    const task = document.createElement("div");
-    task.textContent = `☐  Task ${i}: __________________________`;
-    task.style.padding = "14px 8px";
-    task.style.margin = "8px 0";
-    task.style.background = "#f0f5fa";
-    task.style.borderRadius = "6px";
-    extra.appendChild(task);
+    const card = document.createElement("div");
+    card.style.background = "#ffffff";
+    card.style.border = "1px solid #dce9e1";
+    card.style.borderRadius = "8px";
+    card.style.padding = "15px";
+    card.style.marginTop = "12px";
+
+    const task = document.createElement("strong");
+    task.textContent = `☐  Task ${i}`;
+    task.style.color = "#17613f";
+    card.appendChild(task);
+
+    const answer = document.createElement("div");
+    answer.textContent = "Your answer:";
+    answer.style.marginTop = "12px";
+    card.appendChild(answer);
+
+    const line = document.createElement("div");
+    line.style.borderBottom = "1px solid #b8c9bf";
+    line.style.height = "25px";
+    card.appendChild(line);
+
+    extra.appendChild(card);
   }
-}
+  }
 
 if (layout === "reflection") {
   const heading = document.createElement("h3");
