@@ -407,7 +407,19 @@ function editPage(page) {
     previewTitle.style.paddingBottom = "12px";
 
     const layout = layoutInput.value;
+if (
+  product.type === "Workbooks" &&
+  ["exercise", "worksheet", "reflection"].includes(layout)
+) {
+  DigiStudioInterior.render(layout, {
+    preview: preview,
+    title: previewTitle,
+    content: previewContent,
+    extra: extra
+  });
 
+  return;
+      }
     if (layout === "chapter") {
       preview.style.borderTop = "8px solid #287a52";
       previewTitle.style.textAlign = "center";
