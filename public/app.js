@@ -315,6 +315,13 @@ function editPage(page) {
       ["worksheet", "Worksheet"],
       ["reflection", "Reflection page"]
     ],
+        "Templates": [
+      ["standard", "Standard document"],
+      ["business-document", "Business document"],
+      ["proposal", "Business proposal"],
+      ["invoice", "Invoice"],
+      ["checklist", "Checklist"]
+    ],
     "Planners": [
       ["standard", "Notes page"],
       ["daily", "Daily planner"],
