@@ -422,6 +422,10 @@ if (
   (
     product.type === "Ebooks" &&
     ["standard", "chapter", "quote", "section"].includes(layout)
+  ) ||
+  (
+    product.type === "Templates" &&
+    ["business-document", "proposal", "invoice", "checklist"].includes(layout)
   )
 ) {
   DigiStudioInterior.render(layout, {
@@ -432,7 +436,7 @@ if (
   });
 
   return;
-      }
+}
     if (layout === "chapter") {
       preview.style.borderTop = "8px solid #287a52";
       previewTitle.style.textAlign = "center";
