@@ -336,6 +336,158 @@ register("section", function (elements) {
 
   extra.appendChild(decoration);
 });
+    // TEMPLATE PAGE DESIGNS
+
+  register("business-document", function (elements) {
+    const { preview, title, content, extra, helpers } = elements;
+
+    preview.style.background = "#ffffff";
+    preview.style.borderTop = "6px solid #287a52";
+
+    title.style.color = "#17613f";
+    title.style.fontFamily = "Arial, sans-serif";
+    title.style.fontSize = "26px";
+
+    content.style.fontFamily = "Arial, sans-serif";
+    content.style.lineHeight = "1.8";
+
+    const heading = helpers.createElement("h3", "Business Document", {
+      color: "#17613f",
+      marginTop: "25px"
+    });
+
+    extra.appendChild(heading);
+
+    extra.appendChild(
+      helpers.createElement("p", "Prepared for: ____________________", {
+        marginTop: "15px"
+      })
+    );
+
+    extra.appendChild(
+      helpers.createElement("p", "Date: ____________________", {
+        marginTop: "10px"
+      })
+    );
+  });
+
+  register("proposal", function (elements) {
+    const { preview, title, content, extra, helpers } = elements;
+
+    preview.style.background = "#f8fbff";
+    preview.style.borderTop = "7px solid #245b8f";
+
+    title.style.color = "#245b8f";
+    title.style.textAlign = "center";
+    title.style.fontFamily = "Arial, sans-serif";
+    title.style.fontSize = "27px";
+
+    content.style.lineHeight = "1.8";
+
+    const heading = helpers.createElement("h3", "PROJECT PROPOSAL", {
+      color: "#245b8f",
+      textAlign: "center",
+      letterSpacing: "2px",
+      marginTop: "25px"
+    });
+
+    extra.appendChild(heading);
+
+    ["Project Overview", "Objectives", "Proposed Solution", "Expected Results"].forEach(section => {
+      const card = helpers.createCard(extra);
+
+      card.appendChild(
+        helpers.createElement("strong", section, {
+          color: "#245b8f"
+        })
+      );
+
+      helpers.addWritingLines(card, 2);
+    });
+  });
+
+  register("invoice", function (elements) {
+    const { preview, title, content, extra, helpers } = elements;
+
+    preview.style.background = "#ffffff";
+    preview.style.borderTop = "6px solid #176b5b";
+
+    title.style.color = "#176b5b";
+    title.style.fontFamily = "Arial, sans-serif";
+    title.style.fontSize = "28px";
+
+    const heading = helpers.createElement("h3", "INVOICE", {
+      color: "#176b5b",
+      textAlign: "right",
+      marginTop: "20px",
+      letterSpacing: "3px"
+    });
+
+    extra.appendChild(heading);
+
+    ["Invoice Number: __________________", "Customer: __________________", "Date: __________________"].forEach(label => {
+      extra.appendChild(
+        helpers.createElement("p", label, {
+          marginTop: "12px"
+        })
+      );
+    });
+
+    const table = helpers.createCard(extra, {
+      background: "#f2f8f6",
+      border: "1px solid #cbded8"
+    });
+
+    table.appendChild(
+      helpers.createElement("strong", "Description                 Amount", {
+        color: "#176b5b"
+      })
+    );
+
+    helpers.addWritingLines(table, 4);
+
+    extra.appendChild(
+      helpers.createElement("h3", "TOTAL: __________________", {
+        color: "#176b5b",
+        textAlign: "right",
+        marginTop: "20px"
+      })
+    );
+  });
+
+  register("checklist", function (elements) {
+    const { preview, title, content, extra, helpers } = elements;
+
+    preview.style.background = "#f7fafc";
+    preview.style.borderTop = "6px solid #8064a2";
+
+    title.style.color = "#624583";
+    title.style.fontFamily = "Arial, sans-serif";
+    title.style.fontSize = "25px";
+
+    content.style.lineHeight = "1.8";
+
+    const heading = helpers.createElement("h3", "TASK CHECKLIST", {
+      color: "#624583",
+      marginTop: "25px"
+    });
+
+    extra.appendChild(heading);
+
+    for (let i = 1; i <= 6; i++) {
+      const card = helpers.createCard(extra, {
+        background: "#ffffff",
+        border: "1px solid #e3dced"
+      });
+
+      card.appendChild(
+        helpers.createElement("p", `☐ Task ${i}: __________________________`, {
+          color: "#624583",
+          margin: "5px 0"
+        })
+      );
+    }
+  });
   // Make the engine available to the main application
   window.DigiStudioInterior = {
     register,
