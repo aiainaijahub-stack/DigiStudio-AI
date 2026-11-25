@@ -729,7 +729,73 @@ if (layout === "reflection") {
   renderPages();
   workspace.scrollIntoView({ behavior: "smooth" });
 }
+// ProblemFinder AI Research Import
+document.getElementById("importProblemFinderBtn")
+  .addEventListener("click", () => {
+    const fileInput = document.getElementById("problemFinderImport");
+    const file = fileInput.files[0];
 
+    if (!file) {
+      alert("Please select a ProblemFinder JSON file first.");
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function(event) {
+      try {
+        const data = JSON.parse(event.target.result);
+        const opp = data.opportunity;
+
+        if (!opp) {
+          alert("Invalid ProblemFinder export file.");
+          return;
+        }
+
+        const title = opp.title || "Imported Opportunity";
+
+        const content = JSON.stringify(opp, null, 2);
+
+        const product = {
+          id: Date.now().toString(),
+          title: title,
+          type: "Ebooks",
+          problem: opp.specificProblem || "",
+          audience: opp.targetCustomer || "",
+          design: "Modern and professional",
+          pages: [
+            {
+              title: "Research",
+              content: content
+            }
+          ],
+          createdAt: new Date().toISOString()
+        };
+
+        const saved = JSON.parse(
+          localStorage.getItem("digistudio_products") || "[]"
+        );
+
+        saved.unshift(product);
+
+        localStorage.setItem(
+          "digistudio_products",
+          JSON.stringify(saved)
+        );
+
+        alert("Research imported successfully! Your project has been saved.");
+
+        displaySavedProjects();
+        showSection("saved");
+
+      } catch (error) {
+        console.error(error);
+        alert("Import failed. Please check your JSON file.");
+      }
+    };
+
+    reader.readAsText(file);
+  });
 // Start application
 displayProducts();
 displaySavedProjects();
