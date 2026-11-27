@@ -745,45 +745,54 @@ document.getElementById("importProblemFinderBtn")
     reader.onload = function(event) {
       try {
         const data = JSON.parse(event.target.result);
-        const opp = data.opportunity;
 
-        if (!opp) {
+        // Support both new and old export formats
+        const opportunities = Array.isArray(data.opportunities)
+          ? data.opportunities
+          : data.opportunity
+            ? [data.opportunity]
+            : [];
+
+        if (opportunities.length === 0) {
           alert("Invalid ProblemFinder export file.");
           return;
         }
-
-        const title = opp.title || "Imported Opportunity";
-
-        const content = JSON.stringify(opp, null, 2);
-
-        const product = {
-          id: Date.now().toString(),
-          title: title,
-          type: "Ebooks",
-          problem: opp.specificProblem || "",
-          audience: opp.targetCustomer || "",
-          design: "Modern and professional",
-          pages: [
-            {
-              title: "Research",
-              content: content
-            }
-          ],
-          createdAt: new Date().toISOString()
-        };
 
         const saved = JSON.parse(
           localStorage.getItem("digistudio_products") || "[]"
         );
 
-        saved.unshift(product);
+        const newProjects = opportunities.map((opp, index) => {
+          const title = opp.title || "Imported Opportunity";
+
+          return {
+            id: Date.now().toString() + "-" + index,
+            title: title,
+            type: "Ebooks",
+            problem: opp.specificProblem || "",
+            audience: opp.targetCustomer || "",
+            design: "Modern and professional",
+            pages: [
+              {
+                title: "Research",
+                content: JSON.stringify(opp, null, 2)
+              }
+            ],
+            createdAt: new Date().toISOString()
+          };
+        });
+
+        saved.unshift(...newProjects);
 
         localStorage.setItem(
           "digistudio_products",
           JSON.stringify(saved)
         );
 
-        alert("Research imported successfully! Your project has been saved.");
+        alert(
+          newProjects.length +
+          " research opportunity project(s) imported successfully!"
+        );
 
         displaySavedProjects();
         showSection("saved");
@@ -795,7 +804,9 @@ document.getElementById("importProblemFinderBtn")
     };
 
     reader.readAsText(file);
-  });
+  });        
+          
+  
 // Start application
 displayProducts();
 displaySavedProjects();
